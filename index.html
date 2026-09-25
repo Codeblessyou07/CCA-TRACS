@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCA Tracs - City College of Angeles</title>
+    <style>
+        /* reset & base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            overflow: hidden; /* prevent scroll on body to maintain clean split */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* side panel (green sidebar) */
+        .sidebar {
+            background-color: #004d00;
+            width: 300px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 10;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        /* logo image styling */
+        .sidebar-logo {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            transition: transform 0.2s;
+        }
+
+        .sidebar-logo:hover {
+            transform: scale(1.02);
+        }
+
+        /* college title */
+        .college-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 28px;
+            text-align: center;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            padding: 0 12px;
+        }
+
+        /* CTA login button */
+        .login-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 32px;
+            border: 2px solid white;
+            border-radius: 40px;
+            background: transparent;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
+            backdrop-filter: blur(2px);
+        }
+
+        .login-btn:hover {
+            background-color: #ffffff;
+            color: #004d00;
+            border-color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* main background area (image container) */
+        .hero-background {
+            width: calc(100% - 300px);
+            height: 100vh;
+            margin-left: 300px;
+            background-image: url('cca.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            background-color: #e9f0e6; /* fallback while loading */
+        }
+
+        /* subtle overlay on image for better text visibility if needed */
+        .hero-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 40, 0, 0.08);
+            pointer-events: none;
+        }
+
+        /* responsiveness: on smaller screens, adjust sidebar width */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 260px;
+            }
+            .hero-background {
+                width: calc(100% - 260px);
+                margin-left: 260px;
+            }
+            .college-title {
+                font-size: 20px;
+            }
+            .sidebar-logo {
+                width: 140px;
+            }
+            .login-btn {
+                padding: 8px 24px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 20px 16px;
+                gap: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+            .sidebar-logo {
+                width: 70px;
+                margin-bottom: 0;
+            }
+            .college-title {
+                font-size: 18px;
+                margin-bottom: 0;
+                text-align: left;
+                flex: 1;
+            }
+            .login-btn {
+                padding: 6px 20px;
+                font-size: 14px;
+                margin-left: auto;
+            }
+            .hero-background {
+                width: 100%;
+                margin-left: 0;
+                height: calc(100vh - 110px);
+            }
+            body {
+                overflow-y: auto;
+            }
+            .hero-background::after {
+                background: rgba(0,0,0,0.1);
+            }
+        }
+
+        /* fallback if cca.webp is missing: gentle gradient + pattern */
+        @media (max-width: 480px) {
+            .hero-background {
+                background-image: linear-gradient(125deg, #1c4d3b 0%, #236653 100%);
+            }
+        }
+
+        /* small loading / accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- left sidebar: green panel with logo, college name & login link -->
+    <div class="sidebar">
+        <img src="logo1.png" alt="City College of Angeles official logo" class="sidebar-logo">
+        <div class="college-title">
+            CITY COLLEGE OF <strong style="font-weight:800">ANGELES</strong>
+        </div>
+        <a href="login.php" class="login-btn">
+            LOGIN <span style="font-size: 18px;">→</span>
+        </a>
+    </div>
+
+    <!-- right side main panel: background image (cca.webp) -->
+    <div class="hero-background" aria-label="Campus background image"></div>
+
+    <!-- optional small script to ensure image loading doesn't break layout -->
+    <script>
+        (function() {
+            // simple check: if cca.webp fails to load, keep layout elegant with solid bg
+            const heroDiv = document.querySelector('.hero-background');
+            if (heroDiv) {
+                // test image load (prevent broken image style)
+                const testImg = new Image();
+                testImg.src = 'cca.webp';
+                testImg.onerror = function() {
+                    // if image fails, provide a soft green gradient behind (still elegant)
+                    if (heroDiv) {
+                        heroDiv.style.backgroundImage = 'linear-gradient(125deg, #1c523e, #2b6b54)';
+                        heroDiv.style.backgroundColor = '#1c523e';
+                        // add subtle pattern as placeholder
+                        heroDiv.style.backgroundSize = 'cover';
+                        console.log('cca.webp not found, using beautiful green gradient instead');
+                    }
+                };
+                // also for retina or caching: no extra action needed.
+            }
+            // optional: also handle logo fallback gracefully but not required.
+        })();
+    </script>
+</body>
+</html>

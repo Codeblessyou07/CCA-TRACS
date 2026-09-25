@@ -1,0 +1,118 @@
+<?php
+
+session_start();
+
+require_once 'connect.php';
+
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['id_number'])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'You are not logged in.'
+    ]);
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request.'
+    ]);
+    exit();
+}
+
+$subject_code = $_POST['subject_code'] ?? '';
+$section = $_POST['section'] ?? '';
+$action = $_POST['action'] ?? 'archive';
+
+if (empty($subject_code) || empty($section)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Subject code and section are required.'
+    ]);
+    exit();
+}
+
+
+// =====================================================
+// ARCHIVE
+// =====================================================
+if ($action === 'archive') {
+
+    $stmt = $conn->prepare("
+        UPDATE subjects
+        SET is_archived = 1
+        WHERE subject_code = ?
+        AND section = ?
+    ");
+
+    $stmt->bind_param(
+        "ss",
+        $subject_code,
+        $section
+    );
+
+    if ($stmt->execute()) {
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Subject archived successfully.'
+        ]);
+
+    } else {
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to archive subject.'
+        ]);
+    }
+
+    $stmt->close();
+
+
+// =====================================================
+// UNARCHIVE
+// =====================================================
+} elseif ($action === 'unarchive') {
+
+    $stmt = $conn->prepare("
+        UPDATE subjects
+        SET is_archived = 0
+        WHERE subject_code = ?
+        AND section = ?
+    ");
+
+    $stmt->bind_param(
+        "ss",
+        $subject_code,
+        $section
+    );
+
+    if ($stmt->execute()) {
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Subject restored successfully.'
+        ]);
+
+    } else {
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to restore subject.'
+        ]);
+    }
+
+    $stmt->close();
+
+} else {
+
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid archive action.'
+    ]);
+}
+
+$conn->close();
+?>
